@@ -1,0 +1,70 @@
+PARTEA 1
+
+generate_probabilities_system - fiind dat numarul de linii al labirintului, se
+calculeaza foarte usor numarul total de elemente (suma lui Gauss). Vectorul b
+se initializeaza usor, stiind ca doar ultima linie are acces la iesirea cu
+mancare. Pentru matrice, am tratat cazurile la general pentru liniile care
+erau in mijloc, iar prima si ultima linie le-am tratat separat cu if ( au
+probabilitati diferite fata de cele din mijloc). Pun -1 la nodurile adiacente
+nodului meu principal, iar in nodul meu principal pun intregul care corespunde
+numarului de noduri invecinate + iesiri
+
+Jacobi_sparse - cu ajutorul csr_multiplication si al Jacobi_factorization, 
+calculez probabilitatile pana cand se modifica sub toleranta tol data
+
+PARTEA 2
+
+clustering_pc - N reprezinta numarul punctelor, NC numarul clusterelor, 
+iar D dimensiunea punctelor. Astfel imi declar un cub N / NC (numarul de 
+puncte din fiecare cluster) x D x NC. Declar si groups in acelasi mod,
+groups reprezentand cele NC liste goale in care pun primul element 
+centroids(cluster corespunzator), iar apoi adaug cele mai apropiate
+puncte conform cerintei
+
+compute_cost_pc - calcueaza costul conform cerintei
+
+PARTEA 3
+
+rgbHistogram - imi declar vectorul edges care contine marginile intervalelor
+in care voi clasifica pixelii (ma folosesc de functia histc pe care o aplic
+pe fie care culoare - nivelurile tinute in variabila color)
+
+hsvHistogram - functia este cladita pe alte doua functii:
+	rgbhsvconverter - primeste imaginea si aplica pe ea algoritmul de
+conversie dat in tema, vectorizat
+	hsvHistogramConstructor - asemanator rgbHistogram, realizeaza
+histograma ceruta, de data aceasta facand impartirea pe intervalul [0, 1]
+
+Householder - se bazeaza pe urmatoarele functii:
+	GetHSReflector - obtine reflectorul Householder
+	ApplyHSToColumn - pune zero-uri sub coloana data ca parametru
+	ApplyHSToRandomColumn - aplica HouseHolder pe restul coloanelor
+
+SST - rezolva sistemul R * x = y, unde R este matrice superior triunghiulara
+
+Atat Householder cat si SST le-am scris conform cu laboratoarele 2 si 3 de la Metode Numerice
+
+preprocess - culege pe rand imaginile din cele doua directoare (aici nu am vazut functia data pentru 
+a obtine numele asa ca mi-am construit in preprocess obtinerea numelor cu readdir si apoi prelucrari)
+si construiesc X si y corespunzator
+
+learn - aflu w folosind Householder si SST
+
+evaluate - aflu y prim si il compar cu y astfel : daca produsul dintre un 
+element din y prim si elemntul corespondent din y este pozitiv, inseamna ca
+au acelasi semn si deci am ghicit bine. Fac mean pe toate elementele (cele
+cu 1 sunt ghicite, cu 0 nu). Iau si cazul cand y prim are element 0
+
+
+PARTEA 4
+
+aici adaug o parte din functiile de la 3 : preprocess, cele pentru histograme
+Modific learn - pun algoritmul dat, dar il vectorizez. w il randomizez folosind
+rand care stiu ca genereaza aleator numere intre 0 si 1, asa ca scad 0.5
+pentru a genera intre -0.5 si 0.5, apoi impart la 5 pentru a genera intre -0.1
+si 0.1. Liniile pentru X_batch si y_batch le generez prin randperm
+
+evaluate - este asemanator cu cel de la partea 3, doar ca X este transofrmat
+corespunzator
+
+
